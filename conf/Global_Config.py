@@ -2,5 +2,5 @@
 
 SECRET_KEY = "database2333"
 
-logs_dir = "Logs"
+logs_dir = "temp/Logs"
 
