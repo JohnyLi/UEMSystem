@@ -3,3 +3,6 @@
 _pycache_
 venv
 .DS_Store
+Logs
+*.log
+test1.py

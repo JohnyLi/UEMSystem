@@ -1,5 +1,7 @@
-#coding=utf-8
+# coding=utf-8
 from flask import Flask, g,request,render_template,session,redirect
-
+from startSevice import getSQLHandler
 def welcomeImpl():
-    return 1
+    result = getSQLHandler().SELECT("select * from test")
+
+    return str(result)
