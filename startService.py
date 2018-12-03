@@ -11,6 +11,7 @@ from conf import *
 from public.DBLink import *
 
 
+
 # 全局配置
 # =================================
 app=Flask(__name__)
@@ -18,7 +19,8 @@ app.config.update(dict(SECRET_KEY=SECRET_KEY))
 # app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 # CORS(app, supports_credentials=True) # 允许跨域访问
 
-#
+
+# 其他配置
 # =================================
 @app.before_request
 def before_request():
@@ -60,4 +62,4 @@ def api_getAllAccountInfo():
 
 
 if __name__ == '__main__':
-    app.run(port=5000,debug=True)
+    app.run(port=5000)

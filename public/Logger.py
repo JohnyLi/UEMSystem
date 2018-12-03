@@ -5,7 +5,7 @@ import logging.handlers
 
 import os
 
-from tool.Time_Tool import *
+from util.Time import *
 from conf.Global_Config import logs_dir
 
 def update_log():

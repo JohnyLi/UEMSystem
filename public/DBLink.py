@@ -109,5 +109,5 @@ class SQLHandler:
     def close(self):
         self.conn.close()
 
-sqlServer = SQLServer()
+sqlServer = SQLServer() # 实例化 SQLServer
 
