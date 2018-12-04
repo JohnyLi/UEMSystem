@@ -19,6 +19,7 @@ app.config.update(dict(SECRET_KEY=SECRET_KEY))
 # app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 # CORS(app, supports_credentials=True) # 允许跨域访问
 
+sqlServer = SQLServer()  # 实例化 SQLServer
 
 # 其他配置
 # =================================
@@ -62,4 +63,5 @@ def api_getAllAccountInfo():
 
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    sqlServer.start()
+    app.run(port=5000,debug=True)

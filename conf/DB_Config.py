@@ -8,5 +8,5 @@ DB_PASSWORD = "Johny520"
 
 DB_NAME = "UEMSystem"
 
-DB_ConnNum = 5
-
+# DB_ConnNum = 5
+DB_ConnNum = 2

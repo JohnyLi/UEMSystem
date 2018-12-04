@@ -19,7 +19,7 @@ class SQLServer(object):
         self.user = DB_USER
         self.password = DB_PASSWORD
         self.db = DB_NAME
-        self.makePool(DB_ConnNum)
+        self.DB_ConnNum=DB_ConnNum
     @classmethod
     def instance(cls,*args,**kwargs):
         if not hasattr(SQLServer, "_instance"):
@@ -27,6 +27,9 @@ class SQLServer(object):
                 if not hasattr(SQLServer, "_instance"):
                     SQLServer._instance=SQLServer(*args, **kwargs)
         return SQLServer._instance
+
+    def start(self):
+        self.makePool(self.DB_ConnNum)
 
     def makePool(self,ConnNum):
         print("====================开始创建数据库连接池...==============================")
@@ -50,6 +53,10 @@ class SQLServer(object):
 
 
     def getConn(self):
+        try:
+            self.pool
+        except:
+            self.start()
         conn = self.pool.connection()
         return conn
 
@@ -109,5 +116,5 @@ class SQLHandler:
     def close(self):
         self.conn.close()
 
-sqlServer = SQLServer() # 实例化 SQLServer
+
 
