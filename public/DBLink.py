@@ -14,12 +14,12 @@ class SQLServer(object):
     SQL Sever 连接 (单例)
     """
     _instance_lock=threading.Lock()
-    def __init__(self):
+    def __init__(self,ConnNum=DB_ConnNum):
         self.host = DB_HOST
         self.user = DB_USER
         self.password = DB_PASSWORD
         self.db = DB_NAME
-        self.DB_ConnNum=DB_ConnNum
+        self.ConnNum=ConnNum
     @classmethod
     def instance(cls,*args,**kwargs):
         if not hasattr(SQLServer, "_instance"):
@@ -29,7 +29,7 @@ class SQLServer(object):
         return SQLServer._instance
 
     def start(self):
-        self.makePool(self.DB_ConnNum)
+        self.makePool(self.ConnNum)
 
     def makePool(self,ConnNum):
         print("====================开始创建数据库连接池...==============================")
@@ -92,7 +92,7 @@ class SQLHandler:
 
     def UPDATE(self,query,param=()):
         """
-        处理update和delete语句
+        处理update和delete和insert语句
         :param query: str      sql请求
         :param param: tuple    填入参数,tuple格式
         :return: bool
@@ -116,5 +116,13 @@ class SQLHandler:
     def close(self):
         self.conn.close()
 
-
+def easy_connect():
+    """
+    一键连接数据库
+    :return: SQLHandler
+    """
+    server = SQLServer(ConnNum=1)
+    server.start()
+    handler = SQLHandler(server.getConn())
+    return handler
 
