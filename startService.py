@@ -29,6 +29,9 @@ def before_request():
     app.permanent_session_lifetime = timedelta(hours=24)
 
 def getSQLHandler():
+    """
+    :return: SQLHandler
+    """
     if not hasattr(g, 'handler'):
         conn = sqlServer.getConn()
         g.handler = SQLHandler(conn)
