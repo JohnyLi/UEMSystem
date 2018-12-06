@@ -45,8 +45,8 @@ def close_handler(error):
 
 # 欢迎界面
 @app.route(WEB_welcome, methods=['GET'])
-def web_welcome():
-    return welcomeImpl()
+def web_welcome_interface():
+    return web_welcomeImpl()
 
 
 
@@ -54,10 +54,17 @@ def web_welcome():
 # api
 # =================================
 
+# 登录
+@app.route(API_login, methods=['POST'])
+def api_login_interface():
+    return api_getAllAccountInfoImpl()
+
+
+
 # 返回所有用户信息
 @app.route(API_getAllAccountInfo, methods=['POST'])
-def api_getAllAccountInfo():
-    return getAllAccountInfoImpl()
+def api_getAllAccountInfo_interface():
+    return api_getAllAccountInfoImpl()
 
 
 

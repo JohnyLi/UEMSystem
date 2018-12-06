@@ -13,6 +13,7 @@ WEB_login = "/login"  # 登录界面
 
 
 ##### API ====
+API_login = "/api/login"  # 登录
 API_getAllAccountInfo = "/api/getAllAccountInfo"  # 获取所有用户的信息
 
 

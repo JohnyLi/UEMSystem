@@ -1,9 +1,9 @@
 # coding=utf-8
 
-from service.web.welcome import welcomeImpl
+from service.web.web_welcome import web_welcomeImpl
 
 
 
 
 
-from service.api.getAllAccountInfo import getAllAccountInfoImpl
+from service.api.api_getAllAccountInfo import api_getAllAccountInfoImpl
