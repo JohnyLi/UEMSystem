@@ -34,7 +34,7 @@
             $.ajax({
                 type:"post",
                 contentType:"application/json;charset=UTF-8",
-                url:"{{ url_dict.API_getAllAccountInfo }}",
+                url:"{{ url_dict.API_login }}",
                 dataType:'json',
                 data:JSON.stringify(dict1),
                 success:function(data){
