@@ -3,8 +3,9 @@
 
 
 from util.Sha import get_sha
-from Dao.SELECT.user import CHECK_USER_IS_EXIST,GET_USER_ID
-from public.DBLink import *
+from Dao.SELECT.admin import CHECK_USER_IS_EXIST,GET_USER_ID
+from public.DBLink import easy_connect
+from conf import *
 def INSERT_A_NEW_USER(user_name,password,handler=easy_connect()):
     """
     插入一个新的用户
@@ -16,12 +17,8 @@ def INSERT_A_NEW_USER(user_name,password,handler=easy_connect()):
     if CHECK_USER_IS_EXIST(user_name,handler):
         return False
     query = "insert into %s (user_name,password) value(%s,%s)"
-    param = (TABLE_user,user_name,get_sha(password))
-    try:
-        handler.UPDATE(query, param)
-        return True
-    except:
-        return False
+    param = (TABLE_admin, user_name, get_sha(password))
+    return handler.UPDATE(query, param)
 
 def UPDATE_USER_INFO(user_name,password,handler=easy_connect()):
     """
@@ -35,9 +32,17 @@ def UPDATE_USER_INFO(user_name,password,handler=easy_connect()):
         return False
     user_id = GET_USER_ID(user_name,handler)
     query = "update %s set user_name=%s,password=%s where user_id=%s"
-    param = (TABLE_user,user_name,get_sha(password),user_id)
-    try:
-        handler.UPDATE(query, param)
-        return True
-    except:
-        return False
+    param = (TABLE_admin, user_name, get_sha(password), user_id)
+    return  handler.UPDATE(query, param)
+
+
+def DELETE_USER(user_name,handler=easy_connect()):
+    """
+
+    :param user_name:
+    :param handler:
+    :return:
+    """
+    query="delete from %s where user_name=%s "
+    param=(TABLE_admin, user_name)
+    return handler.UPDATE(query,param)

@@ -3,7 +3,8 @@
 
 
 from util.Sha import get_sha
-from public.DBLink import *
+from public.DBLink import easy_connect
+from conf import *
 def CHECK_user_name_AND_password(user_name,password,handler=easy_connect()):
     """
     检查用户名和密码的正确与否
@@ -14,7 +15,7 @@ def CHECK_user_name_AND_password(user_name,password,handler=easy_connect()):
     """
 
     query = "select password from %s where user_name = %s"
-    param = (TABLE_user,user_name)
+    param = (TABLE_admin, user_name)
     result = handler.SELECT(query,param)
     if len(result)==0:
         return False
@@ -33,7 +34,7 @@ def CHECK_USER_IS_EXIST(user_name,handler=easy_connect()):
     :return: bool
     """
     query = "select * from %s where user_name = %s"
-    param = (TABLE_user,user_name)
+    param = (TABLE_admin, user_name)
     result = handler.SELECT(query, param)
     if len(result) == 0:
         return False
@@ -48,7 +49,7 @@ def GET_USER_ID(user_name,handler=easy_connect()):
     :return: None or int
     """
     query = "select user_id from %s where user_name = %s"
-    param = (TABLE_user,user_name)
+    param = (TABLE_admin, user_name)
     result = handler.SELECT(query, param)
     if len(result) == 0:
         return None

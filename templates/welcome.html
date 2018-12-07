@@ -30,7 +30,7 @@
         function login(){
             var name=$('#name').val();
             var password=$('#password').val();
-            var dict1={'name':name,'password':password};
+            var dict1={'user_name':name,'password':password};
             $.ajax({
                 type:"post",
                 contentType:"application/json;charset=UTF-8",

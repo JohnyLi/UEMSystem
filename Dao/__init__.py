@@ -1,5 +1,5 @@
 
-from Dao.SELECT.user import *
+from Dao.SELECT.admin import *
 
 
 
@@ -10,4 +10,4 @@ from Dao.SELECT.user import *
 
 
 
-from Dao.UPDATE.user import *
+from Dao.UPDATE.admin import *

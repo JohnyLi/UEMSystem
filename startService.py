@@ -60,7 +60,7 @@ def web_welcome_interface():
 # 登录
 @app.route(API_login, methods=['POST'])
 def api_login_interface():
-    return api_getAllAccountInfoImpl()
+    return api_loginImpl()
 
 
 

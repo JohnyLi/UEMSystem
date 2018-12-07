@@ -33,5 +33,5 @@ TABLE_student = "student"
 
 TABLE_student_job = "student_job"
 
-TABLE_user = "user"
+TABLE_admin = "admin"
 
