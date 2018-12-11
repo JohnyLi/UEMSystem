@@ -1,4 +1,4 @@
-from public.DBLink import *
+from util.DBLink import *
 import random
 
 BOY = []

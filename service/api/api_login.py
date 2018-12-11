@@ -1,8 +1,8 @@
 
 from flask import jsonify,request
 import json
-from startService import getSQLHandler 
-from Dao import *
+from util.Functions1 import getSQLHandler
+from Dao.SELECT.admin import CHECK_user_name_AND_password
 def api_loginImpl():
     """
     :INPUT: {'user_name':<user_name> -> str ,'password':<password> -> str}
@@ -15,7 +15,7 @@ def api_loginImpl():
     password=data['password']
     result=CHECK_user_name_AND_password(user_name,password,handler)
     if result:
-        response1['status']='success'
+        response1['status'] = 'success'
     else:
         response1['status'] = 'fail'
 

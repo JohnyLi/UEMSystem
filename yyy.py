@@ -1,2 +1,8 @@
-from public.DBLink import easy_connect
-print(easy_connect().SELECT("select password from admin where user_name = 'jack'"))
+import os
+import time
+count = 0
+while(1):
+    print("================"+str(count))
+    count+=1
+    time.sleep(0.1)
+    os.system("clear")

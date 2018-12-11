@@ -2,41 +2,34 @@
 # coding=utf-8
 
 
-from flask import Flask, g,request,render_template,session,redirect
-from flask_cors import CORS
+from flask import Flask, g, session
 from datetime import timedelta
-
-from service import *
-from conf import *
-from public.DBLink import *
-
-
+from service.serviceModule import *
+from util.DBLink import *
+from conf.Config import *
 
 # 全局配置
 # =================================
 app=Flask(__name__)
-app.config.update(dict(SECRET_KEY=SECRET_KEY))
+app.config.update(dict(SECRET_KEY=SECRET_KEY,SESSION_COOKIE_HTTPONLY=True))
 # app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 # CORS(app, supports_credentials=True) # 允许跨域访问
 
 sqlServer = SQLServer()  # 实例化 SQLServer
+sqlServer.start()
 
 # 其他配置
 # =================================
+@app.before_first_request
+def before_first_request():
+    pass
+
 @app.before_request
 def before_request():
     session.permanent = True
     app.permanent_session_lifetime = timedelta(hours=24)
-
-def getSQLHandler():
-    """
-    :return: SQLHandler
-    """
-    if not hasattr(g, 'handler'):
-        conn = sqlServer.getConn()
-        g.handler = SQLHandler(conn)
-
-    return g.handler
+    if not hasattr(g,'sqlServer'):
+        g.sqlServer = sqlServer
 
 @app.teardown_appcontext    #用户访问结束后，关闭database连接，释放资源
 def close_handler(error):
@@ -71,7 +64,8 @@ def api_getAllAccountInfo_interface():
 
 
 
-
 if __name__ == '__main__':
-    sqlServer.start()
-    app.run(port=80,debug=True)
+    Port = 5000
+    Host = '0.0.0.0'
+    app.run(port=Port,debug=True,use_reloader=False)
+    #app.run(host=Host,port=Port)
