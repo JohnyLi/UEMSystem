@@ -3,6 +3,12 @@
 
 from util.DBLink import easy_connect
 def GET_ALL_student_INFO_BY_YEAR(year,handler=None):
+    """
+    获取
+    :param year:
+    :param handler:
+    :return:
+    """
     if not handler:
         handler=easy_connect()
     query = "select * from student where gradu_year=%s"

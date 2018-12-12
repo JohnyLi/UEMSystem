@@ -71,5 +71,5 @@ def api_getAllAccountInfo_interface():
 if __name__ == '__main__':
     Port = 5000
     Host = '0.0.0.0'
-    app.run(port=Port,debug=True,use_reloader=False)
+    app.run(port=Port,debug=True)
     #app.run(host=Host,port=Port)
