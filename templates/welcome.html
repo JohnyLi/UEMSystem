@@ -6,11 +6,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="UEMSystem">
     <meta name="author" content="邹紫荆">
-
-	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -19,23 +20,78 @@
     <![endif]-->
 
   </head>
-  <body>
+  <body  style="background-image:url('{{ url_for('static',filename='image/welcome_back.jpg') }}')">
+  <!--
+  	<nav class="navbar navbar-transparent navbar-fixed-top">
+	  <div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand">高校学生就业管理系统</a>
+		</div>
+
+		<div id="navbar" class="navbar-collapse collapse">
+		  <ul class="nav navbar-nav navbar-right">
+            {% if privilege %}
+
+			<li>
+            	<a data-toggle="dropdown" href="javascript:vold(0);">
+                	我的账号 <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                	<li>
+			            <a class=" text-center" href="/info/password">修改密码</a>
+			        </li>
+			        <li>
+			        	<a class=" text-center" href="/info/telephone">修改手机号</a>
+			        </li>
+                    <li>
+			        	<a class=" text-center" href="/info/email">修改邮箱</a>
+			        </li>
+                </ul>
+
+        	</li>
+
+
+        	<li>
+                <a href="/logout" style="color:red">退出当前账号</a>
+            </li>
+
+
+            {% else %}
+     <button class="btn btn-success btn-sm" onclick="$('#loginModal').modal('show');" style="margin-top:10px;margin-right:10px">登录</button>
+            {% endif %}
+
+		  </ul>
+
+		</div>
+	  </div>
+	</nav>
+	-->
+
+
+	<div class="container-fluid">
+	  <div class="row">
+         <br/><br/><br/><br/><br/><br/><br/>
+          <h2 class="text-center">WELCOME</h2>
+          <h1 class="text-center">高校就业管理系统</h1>
+          <br/>
+          <div class="text-center">
+              <button class="btn btn-success" onclick="$('#loginModal').modal('show');" >学生/管理员登录</button>
+              <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <button class="btn btn-success" onclick="window.location.href='/look1'">游客浏览</button>
+          </div>
+
+
+	  </div>
+	</div>
 
 
 
 
 
-<div>
-    <input placeholder="用户名" id="name">
-    <br/>
-    <input placeholder="密码" id="password" type="password">
-    <br/>
-    <button class="btn btn-danger">primary</button>
-</div>
-<button onclick="login()">登录</button>
-  <script type="text/javascript">
-        function login(){
-            var name=$('#name').val();
+
+<script type="text/javascript">
+    function login(){
+            var name=$('#user_name').val();
             var password=$('#password').val();
             var dict1={'user_name':name,'password':password};
             $.ajax({
@@ -50,6 +106,57 @@
 
             });
         }
-    </script>
+
+
+</script>
+
+
+
+
+
+
+ <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">登录</h4>
+            </div>
+            <div class="modal-body">
+			<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">用户名/ID</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="user_name" value=""
+                                       placeholder="请输入用户名或学号">
+                            </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">密码</label>
+                            <div class="col-sm-7">
+                                 <input type="password" class="form-control" id="password" value=""
+                                       placeholder="请输入密码">
+                            </div>
+                </div>
+
+			</form>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="login()" id="button_modal">登录</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
   </body>
 </html>
