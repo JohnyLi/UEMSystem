@@ -1,5 +1,5 @@
 # coding=utf-8
-# table: 'user' 的查询类
+# table: 'admin' 的查询类
 
 
 from util.Sha import get_sha

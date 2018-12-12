@@ -44,6 +44,10 @@ def close_handler(error):
 def web_welcome_interface():
     return web_welcomeImpl()
 
+@app.route(WEB_look+"<year>", methods=['GET'])
+def web_look_interface(year):
+    return web_lookImpl(year)
+
 
 
 

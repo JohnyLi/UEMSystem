@@ -6,7 +6,7 @@
 ##### WEB ====
 WEB_welcome = "/"  # 欢迎界面
 WEB_login = "/login"  # 登录界面
-
+WEB_look = "/look"  # 查询界面
 
 
 
