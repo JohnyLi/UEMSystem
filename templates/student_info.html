@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}
+    <title>学生信息</title>
+{% endblock %}
+{% block body %}
+            <div class="col-sm-4">
+                <label><h5 style="font-weight: bold">姓名</h5></label>
+                 <input type="text" class="form-control" value="{{ data.name }}" style="background-color: white;"
+                       readonly/>
+                <br/>
+                <label><h5 style="font-weight: bold">学号</h5></label>
+                 <input type="text" class="form-control" value="{{ data.id }}" style="background-color: white;"
+                       readonly/>
+                <br/>
+                <label><h5 style="font-weight: bold">性别</h5></label>
+                 <input type="text" class="form-control" value="{{ data.gender }}" style="background-color: white;"
+                       readonly/>
+                <br/>
+
+            </div>
+            <div class="col-sm-4">
+                <label><h5 style="font-weight: bold">入学年份</h5></label>
+                 <input type="text" class="form-control" value="{{ data.enroll_year }}" style="background-color: white;"
+                       readonly/>
+                <br/>
+                <label><h5 style="font-weight: bold">毕业年份</h5></label>
+                 <input type="text" class="form-control" value="{{ data.gradu_year }}" style="background-color: white;"
+                       readonly/>
+                <br/>
+                <label><h5 style="font-weight: bold">就业状态</h5></label>
+                 <input type="text" class="form-control" value="{{ data.status }}" style="background-color: white;"
+                       readonly/>
+                <br/>
+
+            </div>
+
+
+
+
+
+{% endblock %}

@@ -18,7 +18,9 @@
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    <title>
+        高校就业管理系统
+    </title>
   </head>
   <body  style="background-image:url('{{ url_for('static',filename='image/welcome_back.jpg') }}')">
   <!--
@@ -88,7 +90,6 @@
 
 
 
-
 <script type="text/javascript">
     function login(){
             var name=$('#user_name').val();
@@ -102,6 +103,15 @@
                 data:JSON.stringify(dict1),
                 success:function(data){
                     alert(data.status);
+                    if(data.status=="success"){
+                        var privilege = data.privilege;
+                        if(privilege==2){
+                            window.location.href = "{{ url_dict.WEB_admin_info }}";
+                        }
+                        else if(privilege==1){
+                            window.location.href = "{{ url_dict.WEB_student_info }}";
+                        }
+                    }
                 },
 
             });

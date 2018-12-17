@@ -2,7 +2,7 @@
 # coding=utf-8
 
 
-from flask import Flask, g, session
+from flask import Flask, g, session,redirect,url_for
 from datetime import timedelta
 from service.serviceModule import *
 from util.DBLink import *
@@ -31,6 +31,7 @@ def before_request():
     if not hasattr(g,'sqlServer'):
         g.sqlServer = sqlServer
 
+
 @app.teardown_appcontext    #用户访问结束后，关闭database连接，释放资源
 def close_handler(error):
     if hasattr(g, 'handler'):
@@ -47,6 +48,10 @@ def web_welcome_interface():
 @app.route(WEB_look+"<year>", methods=['GET'])
 def web_look_interface(year):
     return web_lookImpl(year)
+
+@app.route(WEB_student_info,methods=['GET'])
+def web_student_info_interface():
+    return web_student_infoImpl()
 
 
 
@@ -65,6 +70,13 @@ def api_login_interface():
 @app.route(API_getAllAccountInfo, methods=['POST'])
 def api_getAllAccountInfo_interface():
     return api_getAllAccountInfoImpl()
+
+# logout
+# =================================
+@app.route(URL_LOGOUT)
+def logout():
+    session.clear()
+    return redirect(url_for("web_welcome_interface"))
 
 
 

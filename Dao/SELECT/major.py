@@ -2,7 +2,7 @@
 # table: 'major' 的查询类
 
 from util.DBLink import easy_connect
-def GET_ALL_major(handler=easy_connect):
+def GET_ALL_major(handler=None):
     if not handler:
         handler=easy_connect()
     query = "select major_name from major"
@@ -16,7 +16,15 @@ def GET_ALL_major(handler=easy_connect):
             new_result.append(row[0])
         return new_result
 
-def GET_major_name_BY_major_id(major_id,handler=easy_connect()):
+def GET_ALL_major_INFOS(handler=None):
+    if not handler:
+        handler=easy_connect()
+    query = "select * from major"
+    param = ()
+    result = handler.SELECT(query,param)
+    return result
+
+def GET_major_name_BY_major_id(major_id,handler=None):
     if not handler:
         handler=easy_connect()
     query = "select major_name from major where major_id=%s"

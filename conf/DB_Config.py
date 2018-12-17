@@ -11,6 +11,8 @@ DB_NAME = "UEMSystem"
 # DB_ConnNum = 5
 DB_ConnNum = 2
 
+Default_password = "123456"
+
 # =================== table ====================
 
 TABLE_apart_major = "apart_major"
