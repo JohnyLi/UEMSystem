@@ -13,6 +13,9 @@ def from_year_to_second_secure():
 def from_year_to_minute():
     return time.strftime("%Y-%m-%d %H:%M", time.localtime())
 
+def get_year():
+    return time.strftime("%Y",time.localtime())
+
 # 将天转换成秒
 def change_day_to_second(day):
     seconds = float(day * 24 * 60 * 60)
@@ -29,8 +32,6 @@ def get_unix_time():
 def get_unix_time_by_format(it_time):
     good_time = time.strptime(it_time,"%Y-%m-%d %H:%M:%S")
     return time.mktime(good_time)
-
-
 
 
 

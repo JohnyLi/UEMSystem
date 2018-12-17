@@ -1,27 +1,30 @@
 # coding=utf-8
-from flask import Flask, g,request,render_template,session,redirect
+from flask import request,render_template,session
 from util.Functions1 import getSQLHandler
 from conf.URL_Config import url_dict
 from Dao.SELECT.student import GET_ALL_student_INFO_BY_YEAR,GET_ALL_gradu_Year
-from Dao.SELECT.major import GET_ALL_major_INFOS,GET_major_name_BY_major_id
-from Dao.SELECT.major_student import GET_major_id_BY_stu_id,GET_ALL_major_student_INFOS
+from Dao.SELECT.major import GET_ALL_major_INFOS
+from Dao.SELECT.major_student import GET_ALL_major_student_INFOS
+from util.Time import get_year
 
-def web_lookImpl(year):
-    privilege = session.get("privilege")
-    handler = getSQLHandler()
-    years = GET_ALL_gradu_Year(handler)
-    year = int(year)
-    if year not in years:
-        year = years[0]
-    infos = GET_ALL_student_INFO_BY_YEAR(year,handler)
+def web_lookImpl():
+    handler = getSQLHandler()   #  获取handler
+    privilege = session.get("privilege")    #  获取session中的权限，如果不存在该privilege则为None
 
-    head = get_employ_con(infos)
+    gradu_years = GET_ALL_gradu_Year(handler)     #  获取所有毕业年份
+    now_year = int(request.args.get("year",get_year()))     #  获取url中的毕业年份
+    if now_year not in gradu_years:
+        now_year = gradu_years[0]
+
+    infos = GET_ALL_student_INFO_BY_YEAR(now_year,handler)  #  通过毕业年份获取学生信息
+    head = get_total_employ_con(infos)
     data = get_employ_con_major(handler,infos)
+
     return render_template("look.html",head=head,privilege=privilege,
-                           years=years,url_dict=url_dict,data=data,now_year = year)
+                           years=gradu_years,url_dict=url_dict,data=data,now_year = now_year)
 
 
-def get_employ_con(infos):
+def get_total_employ_con(infos):
     result = {'gradu_num':len(infos),'employ_num':0,'wait_num':0}
     for info in infos:
         if info[5]=='待业':

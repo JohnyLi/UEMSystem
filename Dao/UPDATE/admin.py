@@ -1,5 +1,5 @@
 # coding=utf-8
-# table: 'user' 的更新类
+# table: 'admin' 的更新类
 
 
 from util.Sha import get_sha

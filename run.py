@@ -45,9 +45,9 @@ def close_handler(error):
 def web_welcome_interface():
     return web_welcomeImpl()
 
-@app.route(WEB_look+"<year>", methods=['GET'])
-def web_look_interface(year):
-    return web_lookImpl(year)
+@app.route(WEB_look, methods=['GET'])
+def web_look_interface():
+    return web_lookImpl()
 
 @app.route(WEB_student_info,methods=['GET'])
 def web_student_info_interface():

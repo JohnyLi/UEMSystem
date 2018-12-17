@@ -79,7 +79,7 @@
           <div class="text-center">
               <button class="btn btn-success" onclick="$('#loginModal').modal('show');" >学生/管理员登录</button>
               <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-              <button class="btn btn-success" onclick="window.location.href='/look1'">游客浏览</button>
+              <button class="btn btn-success" onclick="window.location.href='{{ url_dict.WEB_look }}'">游客浏览</button>
           </div>
 
 
@@ -94,6 +94,9 @@
     function login(){
             var name=$('#user_name').val();
             var password=$('#password').val();
+            if(name==""||password==""){
+                return;
+            }
             var dict1={'user_name':name,'password':password};
             $.ajax({
                 type:"post",
@@ -117,6 +120,12 @@
             });
         }
 
+    document.onkeyup = function (e) {//按键信息对象以函数参数的形式传递进来了，就是那个e
+        var code = e.charCode || e.keyCode;  //取出按键信息中的按键代码(大部分浏览器通过keyCode属性获取按键代码，但少部分浏览器使用的却是charCode)
+        if (code == 13) {
+            login();
+        }
+    }
 
 </script>
 

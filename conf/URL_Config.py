@@ -32,7 +32,7 @@ for key in url_local.keys():
 del url_local,key
 
 
-STUDENT_BAR = [("查询往年就业情况",WEB_look+"1"),('个人信息',WEB_student_info),('就业登记',WEB_student_employ_con)]
+STUDENT_BAR = [("查询往年就业情况",WEB_look),('个人信息',WEB_student_info),('就业登记',WEB_student_employ_con)]
 
 
 

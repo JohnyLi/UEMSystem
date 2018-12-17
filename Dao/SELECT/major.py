@@ -3,6 +3,11 @@
 
 from util.DBLink import easy_connect
 def GET_ALL_major(handler=None):
+    """
+    获取所有专业名
+    :param handler: SQLHandler
+    :return: list
+    """
     if not handler:
         handler=easy_connect()
     query = "select major_name from major"
@@ -17,6 +22,11 @@ def GET_ALL_major(handler=None):
         return new_result
 
 def GET_ALL_major_INFOS(handler=None):
+    """
+    获取所有专业信息,包括专业id和专业名
+    :param handler: SQLHandler
+    :return:
+    """
     if not handler:
         handler=easy_connect()
     query = "select * from major"
@@ -25,6 +35,12 @@ def GET_ALL_major_INFOS(handler=None):
     return result
 
 def GET_major_name_BY_major_id(major_id,handler=None):
+    """
+    根据专业id获取专业名
+    :param major_id: int
+    :param handler: SQLHandler
+    :return:
+    """
     if not handler:
         handler=easy_connect()
     query = "select major_name from major where major_id=%s"

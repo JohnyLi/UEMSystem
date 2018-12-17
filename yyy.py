@@ -1,8 +1,3 @@
-import os
-import time
-count = 0
-while(1):
-    print("================"+str(count))
-    count+=1
-    time.sleep(0.1)
-    os.system("clear")
+from Dao.SELECT.major_student import *
+
+print(GET_major_name_BY_stu_id(11310001))
