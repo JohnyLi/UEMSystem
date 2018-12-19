@@ -51,3 +51,11 @@ def DELETE_USER(user_name,handler=None):
     query="delete from %s where user_name=%s "
     param=(user_name)
     return handler.UPDATE(query,param)
+
+def CHANGE_ADMIN_password(user_name,password,handler=None):
+
+    if not handler:
+        handler=easy_connect()
+    query = "update admin set password=%s where user_name=%s"
+    param = ( get_sha(password), user_name)
+    return  handler.UPDATE(query, param)

@@ -13,14 +13,14 @@ def api_loginImpl():
     response1 = {}
     handler = getSQLHandler()   # 获取sql连接
     data = json.loads(request.get_data().decode('utf-8'))
-    user_name = data['user_name']
+    user = data['user_name']
     password=data['password']
-    result=loginCheck(user_name,password,handler)
+    result=loginCheck(user,password,handler)
     if result:
         response1['status'] = 'success'
         response1['privilege'] = result
         session['privilege'] = result
-        session['id'] = user_name
+        session['user'] = user
     else:
         response1['status'] = 'fail'
         session.clear()

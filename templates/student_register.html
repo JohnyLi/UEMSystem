@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+{% block title %}
+    <title>学生就业登记</title>
+{% endblock %}
+{% block body %}
+        <div class="col-sm-4">
+                    <label><h5 style="font-weight: bold">姓名</h5></label>
+                     <input type="text" class="form-control" value="{{ data.name }}" style="background-color: white;"
+                           readonly/>
+                    <br/>
+        </div>
+        <div class="col-sm-4">
+                    <label><h5 style="font-weight: bold">学号</h5></label>
+                     <input type="text" class="form-control" value="{{ data.id }}" style="background-color: white;"
+                           readonly/>
+                    <br/>
+        </div>
+        <div class="col-sm-4">
+                    <label><h5 style="font-weight: bold">毕业年份</h5></label>
+                     <input type="text" class="form-control" value="{{ data.gradu_year }}" style="background-color: white;"
+                           readonly/>
+                    <br/>
+        </div>
+<span style="font-weight: bold">&nbsp;&nbsp;&nbsp;&nbsp;公司名称：</span>
+               <select onchange="change_company()">
+                   {% for company in companies %}
+                   <option value="{{ company.id }}"
+                           {% if company.id==now_com_id %}selected="selected"{% endif %}>
+                       {{ company.name }}
+                   </option>
+                   {% endfor %}
+               </select>
+    <HR>
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                  <th>公司名称</th>
+                  <th>职位名称</th>
+                  <th>需求数量</th>
+                  <th>已聘用数量</th>
+                  <th>开始时间</th>
+                  <th>结束时间</th>
+                  <th>是否登记</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for row in company_job %}
+                  <tr>
+                          <td>{{ row.com_name }}</td>
+                          <td>{{ row.job_name }}</td>
+                          <td>{{ row.need_num }}</td>
+                          <td>{{ row.exist_num }}</td>
+                          <td>{{ row.start_time }}</td>
+                          <td>{{ row.finish_time }}</td>
+                          <td>
+                              <button class="btn btn-success btn-sm"
+                                      onclick="register({{ row.com_job_id }})">
+                                  登记
+                              </button>
+                          </td>
+
+                  </tr>
+
+              {% endfor %}
+              </tbody>
+          </table>
+
+
+<script type="text/javascript">
+      function change_company(){
+          var company_id = $("select").val();
+          window.location.href="{{ url_dict.WEB_student_employ_con }}?com_id="+company_id;
+      }
+      function register(com_job_id){
+          if(!confirm('确认登记？'))
+              return;
+          var dict1 = {'com_job_id':com_job_id};
+          $.ajax({
+                type:"post",
+                contentType:"application/json;charset=UTF-8",
+                url:"{{ url_dict.API_register }}",
+                dataType:'json',
+                data:JSON.stringify(dict1),
+                success:function(data){
+                    alert(data.status);
+                    location.replace(window.location.href);
+                },
+
+
+            });
+
+      }
+</script>
+
+
+
+
+{% endblock %}

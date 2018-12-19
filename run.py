@@ -53,7 +53,25 @@ def web_look_interface():
 def web_student_info_interface():
     return web_student_infoImpl()
 
+@app.route(WEB_change_password,methods=['GET'])
+def web_change_password_interface():
+    return web_change_passwordImpl()
 
+@app.route(WEB_student_employ_con,methods=['GET'])
+def web_student_emply_con_interface():
+    return web_student_registerImpl()
+
+@app.route(WEB_register_con,methods=['GET'])
+def web_register_con_interface():
+    return web_register_conImpl()
+
+@app.route(WEB_admin_info,methods=['GET'])
+def web_admin_info_interface():
+    return web_admin_infoImpl()
+
+@app.route(WEB_student_management,methods=['GET'])
+def web_student_management_interface():
+    return web_student_managementImpl()
 
 
 # api
@@ -64,12 +82,24 @@ def web_student_info_interface():
 def api_login_interface():
     return api_loginImpl()
 
-
+@app.route(API_change_password, methods=['POST'])
+def api_change_password_interface():
+    return api_change_passwordImpl()
 
 # 返回所有用户信息
 @app.route(API_getAllAccountInfo, methods=['POST'])
 def api_getAllAccountInfo_interface():
     return api_getAllAccountInfoImpl()
+
+# 登记
+@app.route(API_register, methods=['POST'])
+def api_register_interface():
+    return api_registerImpl()
+
+# 学生管理
+@app.route(API_student_management, methods=['POST'])
+def api_student_management_interface():
+    return api_student_managementImpl()
 
 # logout
 # =================================
@@ -77,6 +107,7 @@ def api_getAllAccountInfo_interface():
 def logout():
     session.clear()
     return redirect(url_for("web_welcome_interface"))
+
 
 
 

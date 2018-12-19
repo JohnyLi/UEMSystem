@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block title %}
+    <title>学生就业登记</title>
+{% endblock %}
+{% block body %}
+    <h3>审核情况</h3>
+    <HR>
+      <table class="table table-striped">
+              <thead>
+              <tr>
+                  <th>公司名称</th>
+                  <th>职位名称</th>
+                  <th>登记时间</th>
+                  <th>审核情况</th>
+                  <th>删除登记</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for row in company_job %}
+                  <tr>
+                          <td>{{ row.com_name }}</td>
+                          <td>{{ row.job_name }}</td>
+                          <td>{{ row.register_time }}</td>
+                          <td>{{ row.verify_con }}</td>
+                          <td>
+                              <button class="btn btn-success btn-sm"
+                                      {% if row.verify_con=="success" %}disabled{% endif %}
+                                      onclick="deleteVerify({{ row.verify_id }})">
+                                  删除登记
+                              </button>
+                          </td>
+
+                  </tr>
+
+              {% endfor %}
+              </tbody>
+          </table>
+
+
+{% endblock %}

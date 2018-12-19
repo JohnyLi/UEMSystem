@@ -33,6 +33,10 @@ def get_unix_time_by_format(it_time):
     good_time = time.strptime(it_time,"%Y-%m-%d %H:%M:%S")
     return time.mktime(good_time)
 
+def get_unix_time_by_date(date):
+    good_time = time.strptime(date, "%Y-%m-%d")
+    return time.mktime(good_time)
+
 
 
 

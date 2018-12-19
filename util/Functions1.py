@@ -13,7 +13,7 @@ def getSQLHandler():
     return g.handler
 
 def check_session():
-    if (not session.get('id')) or (not session.get('privilege')):
+    if (not session.get('user')) or (not session.get('privilege')):
         return False
     else:
         return True

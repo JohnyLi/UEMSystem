@@ -51,3 +51,12 @@ def GET_major_name_BY_stu_id(stu_id,handler=None):
         return result[0][0]
 
 
+def GET_ALL_STUDENT_INFOS(handler=None):
+    if not handler:
+        handler = easy_connect()
+    query = "select * from v_major_student_infos"
+    param = ()
+    result = handler.SELECT(query, param)
+    return result
+
+

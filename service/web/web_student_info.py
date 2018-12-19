@@ -8,7 +8,7 @@ def web_student_infoImpl():
         return redirect(url_for("logout"))
     sidebar = GetSideBar(STUDENT_BAR,"个人信息")
     handler = getSQLHandler()
-    id = session['id']
+    id = session['user']
     data = {}
     result = GET_student_INFO_BY_ID(id,handler)
     if result == None:

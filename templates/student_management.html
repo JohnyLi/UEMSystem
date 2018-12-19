@@ -1,0 +1,126 @@
+{% extends "layout.html" %}
+{% block title %}
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+
+    <title>学生信息</title>
+
+    <script type="text/javascript" >
+        function add_stu(){
+
+        }
+        function change_stu(){
+
+        }
+        function delete_stu(){
+
+        }
+
+
+    </script>
+
+
+
+{% endblock %}
+{% block body %}
+    <button class="btn btn-primary" onclick="add_stu()">新增学生</button>
+    <table class="table table-striped" id="stu_table">
+              <thead>
+              <tr>
+                  <th>学号</th>
+                  <th>学生姓名</th>
+                  <th>性别</th>
+                  <th>入学年份</th>
+                  <th>毕业年份</th>
+                  <th>就业状态</th>
+                  <th>专业名称</th>
+                  <th>操作</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+          </table>
+
+<script type="text/javascript">
+        make_student_info();
+        function make_student_info(){
+            var dict1={'control':'get_student_info'}
+            $.ajax({
+                type:"post",
+                contentType:"application/json;charset=UTF-8",
+                url:"{{ url_dict.API_student_management }}",
+                dataType:'json',
+                data:JSON.stringify(dict1),
+                success:function(data){
+                    if(data.status=="success"){
+
+                        setData(data.data);
+                    }
+                    else{
+                        alert("请求失败");
+                    }
+                },
+
+
+            });
+        }
+        function setData(data){
+            for(var i=0;i<data.length;i++){
+                var buttonSentence = "<button class='btn btn-success btn-sm' onclick='"+'"change_stu(this)"'+"'>修改</button>&nbsp;";
+                buttonSentence += "<button class='btn btn-danger btn-sm' onclick='"+'"delete_stu(this)"'+"'>删除</button>";
+                data[i].button=buttonSentence;
+            }
+            Form(data);
+        }
+        function Form(data){
+                $('#stu_table').dataTable({
+                    destroy: true,
+                    bAutoWidth: true,  //自动设置宽度
+                    data:data,
+                    bStateSave : true,
+                    bPaginate : true,
+                    "bLengthChange" : false,// 每行显示记录数
+                    "iDisplayLength" : 10,// 每页显示行数
+                    "bInfo" : true,
+                    "sPaginationType" : "full_numbers", // 分页，一共两种样式 另一种为two_button // 是datatables默认
+                    "bProcessing" : true,
+                    columns:[
+                        {data:'stu_id'},
+                        {data:'stu_name'},
+                        {data:'gender'},
+                        {data:'enroll_year'},
+                        {data:'gradu_year'},
+                        {data:'status'},
+                        {data:'major_name'},
+                        {data:'button'},
+                      ],
+                      /*国际化语言*/
+                      language : {
+                            "sProcessing" : "处理中...",
+                            "sLengthMenu" : "显示 _MENU_ 项结果",
+                            "sZeroRecords" : "没有匹配结果",
+                            "sInfo" : "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                            "sInfoEmpty" : "显示第 0 至 0 项结果，共 0 项",
+                            "sInfoFiltered" : "(由 _MAX_ 项结果过滤)",
+                            "sInfoPostFix" : "",
+                            "sSearch" : "搜索:",
+                            "sUrl" : "",
+                            "sEmptyTable" : "表中数据为空",
+                            "sLoadingRecords" : "载入中...",
+                            "sInfoThousands" : ",",
+                            "oPaginate" : {
+                                "sFirst" : "首页",
+                                "sPrevious" : "上页",
+                                "sNext" : "下页",
+                                "sLast" : "末页"
+                            },
+                        },
+                });
+        }
+
+
+</script>
+
+
+{% endblock %}

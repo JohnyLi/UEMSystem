@@ -1,3 +1,3 @@
-from Dao.SELECT.major_student import *
+from Dao.SELECT.com_job import *
 
-print(GET_major_name_BY_stu_id(11310001))
+print(GET_ALL_com_job_infos())
