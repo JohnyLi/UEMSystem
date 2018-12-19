@@ -7,12 +7,29 @@
 
     <script type="text/javascript" >
         function add_stu(){
-
+            $('#addModal').modal('show');
+            $('#stu_id').val("");
+            $('#stu_name').val("");
+            $('#enroll_year').val("");
+            $('#gradu_year').val("");
         }
-        function change_stu(){
-
+        function change_stu(that){
+            $('#changeModal').modal('show');
+            var tds=$(that).parent().parent().children('td');
+            $('#stu_id2').val($(tds[0]).html());
+            $('#stu_name2').val($(tds[1]).html());
+            $('#enroll_year2').val($(tds[3]).html());
+            $('#gradu_year2').val($(tds[4]).html());
         }
-        function delete_stu(){
+        function delete_stu(that){
+            var tds=$(that).parent().parent().children('td');
+            var stu_id = $(tds[0]).html();
+            if(confirm('确定删除学号为'+stu_id+"的学生吗?")){
+
+
+            }
+        }
+        function makeSomething(control){
 
         }
 
@@ -42,6 +59,152 @@
               </tbody>
           </table>
 
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modal_title">新增一位学生</h4>
+            </div>
+            <div class="modal-body">
+			<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">学号</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="stu_id" value=""
+                                       placeholder="请输入学号">
+                            </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">姓名</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="stu_name" value=""
+                                       placeholder="请输入姓名">
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">性别</label>
+                            <div class="col-sm-7">
+                                 <select id="gender">
+                                     <option value="男">
+                                         男
+                                     </option>
+                                     <option value="女">
+                                         女
+                                     </option>
+                                 </select>
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">入学年份</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="enroll_year" value=""
+                                       placeholder="请输入入学年份">
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">毕业年份</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="gradu_year" value=""
+                                       placeholder="请输入毕业年份">
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">专业</label>
+                            <div class="col-sm-7">
+                                 <select id="major_name">
+                                     {% for major in majors %}
+                                         <option value="{{ major[0] }}">
+                                         {{ major[1] }}
+                                         </option>
+                                     {% endfor %}
+                                 </select>
+                            </div>
+                </div>
+
+			</form>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="makeSomething('add')">新增</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="modal fade" id="changeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modal_title2">修改</h4>
+            </div>
+            <div class="modal-body">
+			<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">学号</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="stu_id2" value=""
+                                       placeholder="请输入学号" readonly>
+                            </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">姓名</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="stu_name2" value=""
+                                       placeholder="请输入姓名" readonly>
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">性别</label>
+                            <div class="col-sm-7">
+                                 <select id="gender2">
+                                     <option value="男">
+                                         男
+                                     </option>
+                                     <option value="女">
+                                         女
+                                     </option>
+                                 </select>
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">入学年份</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="enroll_year2" value=""
+                                       placeholder="请输入入学年份">
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">毕业年份</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="gradu_year2" value=""
+                                       placeholder="请输入毕业年份">
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">专业</label>
+                            <div class="col-sm-7">
+                                 <select id="major_name2">
+                                     {% for major in majors %}
+                                         <option value="{{ major[0] }}">
+                                         {{ major[1] }}
+                                         </option>
+                                     {% endfor %}
+                                 </select>
+                            </div>
+                </div>
+
+			</form>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="makeSomething('change')">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
         make_student_info();
         function make_student_info(){
@@ -67,8 +230,8 @@
         }
         function setData(data){
             for(var i=0;i<data.length;i++){
-                var buttonSentence = "<button class='btn btn-success btn-sm' onclick='"+'"change_stu(this)"'+"'>修改</button>&nbsp;";
-                buttonSentence += "<button class='btn btn-danger btn-sm' onclick='"+'"delete_stu(this)"'+"'>删除</button>";
+                var buttonSentence = "<button class='btn btn-success btn-sm' onclick='"+'change_stu(this)'+"'>修改</button>&nbsp;";
+                buttonSentence += "<button class='btn btn-danger btn-sm' onclick='"+'delete_stu(this)'+" '2>删除</button>";
                 data[i].button=buttonSentence;
             }
             Form(data);
