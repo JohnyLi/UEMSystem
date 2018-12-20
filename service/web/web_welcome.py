@@ -9,5 +9,5 @@ def web_welcomeImpl():
         if privilege == PRIVILEGE_STUDENT:
             return redirect(url_for("web_student_info_interface"))
         elif privilege == PRIVILEGE_ADMIN:
-            pass
+            return redirect(url_for("web_admin_info_interface"))
     return render_template("welcome.html",url_dict=url_dict)
