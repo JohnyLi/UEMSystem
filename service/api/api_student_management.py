@@ -30,6 +30,8 @@ def api_student_managementImpl():
             response1['data']=result
         else:
             response1['status']="fail"
+    elif control=="add":
+
 
 
     return jsonify(response1)

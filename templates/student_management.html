@@ -25,22 +25,69 @@
             var tds=$(that).parent().parent().children('td');
             var stu_id = $(tds[0]).html();
             if(confirm('确定删除学号为'+stu_id+"的学生吗?")){
-                makeSomething("delete");
+                makeSomething(stu_id);
             }
         }
         function makeSomething(control){
-            if(control=="delete"){
-
+            if(control=="add"){
+                var stu_id = $('#stu_id').val();
+                var stu_name = $('#stu_name').val();
+                var enroll_year = $('#enroll_year').val();
+                var gradu_year = $('#gradu_year').val();
+                var gender = $('#gender').val();
+                var major_name = $('#major_name').val();
+                var dict1 = {'control':"add",'stu_id':stu_id,'stu_name':stu_name,
+                    'enroll_year':enroll_year,'gradu_year':gradu_year,'gender':gender,
+                    'major_name':major_name
+                };
+                $.ajax({
+                        type:"post",
+                        contentType:"application/json;charset=UTF-8",
+                        url:"{{ url_dict.API_student_management }}",
+                        dataType:'json',
+                        data:JSON.stringify(dict1),
+                        success:function(data){
+                            alert(data.status);
+                        },
+                    });
+            }
+            else if(control=="change"){
+                    var stu_id = $('#stu_id2').val();
+                    var stu_name = $('#stu_name2').val();
+                    var enroll_year = $('#enroll_year2').val();
+                    var gradu_year = $('#gradu_year2').val();
+                    var gender = $('#gender2').val();
+                    var major_name = $('#major_name2').val();
+                    var dict1 = {'control':"change",'stu_id':stu_id,'stu_name':stu_name,
+                        'enroll_year':enroll_year,'gradu_year':gradu_year,'gender':gender,
+                        'major_name':major_name
+                    };
+                    $.ajax({
+                        type:"post",
+                        contentType:"application/json;charset=UTF-8",
+                        url:"{{ url_dict.API_student_management }}",
+                        dataType:'json',
+                        data:JSON.stringify(dict1),
+                        success:function(data){
+                            alert(data.status);
+                        },
+                    });
             }
             else{
-
-
-
-
+                var stu_id = control;
+                var dict1 = {'stu_id':stu_id,'control':'delete'};
+                $.ajax({
+                        type:"post",
+                        contentType:"application/json;charset=UTF-8",
+                        url:"{{ url_dict.API_student_management }}",
+                        dataType:'json',
+                        data:JSON.stringify(dict1),
+                        success:function(data){
+                            alert(data.status);
+                        },
+            });
             }
         }
-
-
     </script>
 
 
@@ -224,7 +271,6 @@
                 data:JSON.stringify(dict1),
                 success:function(data){
                     if(data.status=="success"){
-
                         setData(data.data);
                     }
                     else{
