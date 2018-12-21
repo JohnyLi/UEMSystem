@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>专业管理</title>
+{% endblock %}
+{% block body %}
+
+<button class="btn btn-success" onclick="$('#addMajorModal').modal('show')">新增专业</button>
+<button class="btn btn-danger" onclick="$('#apartModal').modal('show')">新增院系</button>
+
+
+<div class="table-responsive">
+          <table class="table table-striped">
+              <thead>
+              <tr>
+                  <th>专业id</th>
+                  <th>专业名称</th>
+                  <th>院系</th>
+                  <th>人数</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for row in data %}
+                  <tr>
+                            <td>{{ row.major_id }}</td>
+                          <td>{{ row.major_name }}</td>
+                          <td>{{ row.apart_name }}</td>
+                          <td>{{ row.major_num }}</td>
+                  </tr>
+              {% endfor %}
+              </tbody>
+          </table>
+      </div>
+
+<div class="modal fade" id="apartModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">新增部门</h4>
+            </div>
+            <div class="modal-body">
+			<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">部门名</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="apart_name" value=""
+                                       placeholder="请输入部门名">
+                            </div>
+                </div>
+			</form>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="addApart()">新增</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addMajorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">新增部门</h4>
+            </div>
+            <div class="modal-body">
+			<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">专业名</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="major_name1" value=""
+                                       placeholder="请输入专业名">
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">部门</label>
+                            <div class="col-sm-7">
+                                 <select id="apart_choose1">
+                                     {% for apart_info in apart_infos %}
+                                         <option value="{{ apart_info[0] }}">
+                                         {{ apart_info[1] }}
+                                         </option>
+                                     {% endfor %}
+                                 </select>
+                            </div>
+                </div>
+			</form>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="addMajor()">新增</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function send(dict1){
+        $.ajax({
+                        type:"post",
+                        contentType:"application/json;charset=UTF-8",
+                        url:"{{ url_dict.API_major_management }}",
+                        dataType:'json',
+                        data:JSON.stringify(dict1),
+                        success:function(data){
+                            alert(data.status);
+                            location.replace(window.location.href);
+                        },
+            });
+    }
+
+    function addApart(){
+        if($('#apart_name').val()=="")
+            return;
+        if(!confirm("确定添加？"))
+            return;
+        var dict1={'control':"AddApart",'apart_name':$('#apart_name').val()};
+        send(dict1);
+    }
+
+    function addMajor(){
+        if($('#major_name1').val()=="")
+            return;
+        if(!confirm("确定添加？"))
+            return;
+        var dict1={'control':"AddMajor","major_name":$('#major_name1').val(),'apart_id':$('#apart_choose1').val()};
+        send(dict1);
+    }
+    function init_modal(){
+        $('#apart_name').val("");
+        $('#major_name1').val("");
+    }
+
+</script>
+
+
+{% endblock %}

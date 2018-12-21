@@ -20,63 +20,79 @@
             $('#stu_name2').val($(tds[1]).html());
             $('#enroll_year2').val($(tds[3]).html());
             $('#gradu_year2').val($(tds[4]).html());
+            $('#gender2').val($(tds[2]).html());
+            let major_name = $(tds[6]).html();
+            let majors = $('#major_name2').children('option');
+            for(let i=0;i<majors.length;i++){
+                if($(majors[i]).html()==major_name){
+                    $(majors[i]).attr('selected',true);
+                    break;
+                }
+
+            }
+
         }
         function delete_stu(that){
             var tds=$(that).parent().parent().children('td');
             var stu_id = $(tds[0]).html();
             if(confirm('确定删除学号为'+stu_id+"的学生吗?")){
-                makeSomething(stu_id);
+                makeSomething("delete",stu_id);
             }
         }
-        function makeSomething(control){
+        function reset_stu(that){
+            var tds=$(that).parent().parent().children('td');
+            var stu_id = $(tds[0]).html();
+            if(confirm('确定重置学号为'+stu_id+"的学生的密码吗?")){
+                makeSomething("reset",stu_id);
+            }
+        }
+        function makeSomething(control,val1){
             if(control=="add"){
-                var stu_id = $('#stu_id').val();
-                var stu_name = $('#stu_name').val();
-                var enroll_year = $('#enroll_year').val();
-                var gradu_year = $('#gradu_year').val();
-                var gender = $('#gender').val();
-                var major_name = $('#major_name').val();
+
+                let stu_id = $('#stu_id').val();
+                let stu_name = $('#stu_name').val();
+                let enroll_year = $('#enroll_year').val();
+                let gradu_year = $('#gradu_year').val();
+                let gender = $('#gender').val();
+                let major_name = $('#major_name').val();
+                if(stu_id==""||stu_name==""||enroll_year==""||gradu_year=="")
+                    return;
+                if(!confirm("确认新增？"))
+                        return ;
                 var dict1 = {'control':"add",'stu_id':stu_id,'stu_name':stu_name,
                     'enroll_year':enroll_year,'gradu_year':gradu_year,'gender':gender,
                     'major_name':major_name
                 };
-                $.ajax({
-                        type:"post",
-                        contentType:"application/json;charset=UTF-8",
-                        url:"{{ url_dict.API_student_management }}",
-                        dataType:'json',
-                        data:JSON.stringify(dict1),
-                        success:function(data){
-                            alert(data.status);
-                        },
-                    });
+
             }
             else if(control=="change"){
-                    var stu_id = $('#stu_id2').val();
-                    var stu_name = $('#stu_name2').val();
-                    var enroll_year = $('#enroll_year2').val();
-                    var gradu_year = $('#gradu_year2').val();
-                    var gender = $('#gender2').val();
-                    var major_name = $('#major_name2').val();
+                    if(!confirm("确认修改？"))
+                        return ;
+
+                    let stu_id = $('#stu_id2').val();
+                    let stu_name = $('#stu_name2').val();
+                    let enroll_year = $('#enroll_year2').val();
+                    let gradu_year = $('#gradu_year2').val();
+                    let gender = $('#gender2').val();
+                    let major_name = $('#major_name2').val();
+                    if(stu_id==""||stu_name==""||enroll_year==""||gradu_year=="")
+                        return;
                     var dict1 = {'control':"change",'stu_id':stu_id,'stu_name':stu_name,
                         'enroll_year':enroll_year,'gradu_year':gradu_year,'gender':gender,
                         'major_name':major_name
                     };
-                    $.ajax({
-                        type:"post",
-                        contentType:"application/json;charset=UTF-8",
-                        url:"{{ url_dict.API_student_management }}",
-                        dataType:'json',
-                        data:JSON.stringify(dict1),
-                        success:function(data){
-                            alert(data.status);
-                        },
-                    });
+
             }
-            else{
-                var stu_id = control;
+            else if(control=="reset"){
+                let stu_id = val1;
+                var dict1 = {'stu_id':stu_id,'control':'reset'};
+            }
+            else if(control=="delete"){
+                let stu_id = val1;
                 var dict1 = {'stu_id':stu_id,'control':'delete'};
-                $.ajax({
+
+            }
+            $.ajax({
                         type:"post",
                         contentType:"application/json;charset=UTF-8",
                         url:"{{ url_dict.API_student_management }}",
@@ -84,9 +100,9 @@
                         data:JSON.stringify(dict1),
                         success:function(data){
                             alert(data.status);
+                            location.replace(window.location.href);
                         },
             });
-            }
         }
     </script>
 
@@ -95,23 +111,10 @@
 {% endblock %}
 {% block body %}
     <button class="btn btn-primary" onclick="add_stu()">新增学生</button>
+    <h4 style="color:red">加载中..</h4>
     <table class="table table-striped" id="stu_table">
-              <thead>
-              <tr>
-                  <th>学号</th>
-                  <th>学生姓名</th>
-                  <th>性别</th>
-                  <th>入学年份</th>
-                  <th>毕业年份</th>
-                  <th>就业状态</th>
-                  <th>专业名称</th>
-                  <th>操作</th>
-              </tr>
-              </thead>
-              <tbody>
 
-              </tbody>
-          </table>
+    </table>
 
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -180,7 +183,7 @@
 			</form>
 			</div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" onclick="makeSomething('add')">新增</button>
+                <button type="button" class="btn btn-default" onclick="makeSomething('add',0)">新增</button>
             </div>
         </div>
     </div>
@@ -242,9 +245,7 @@
                             <div class="col-sm-7">
                                  <select id="major_name2">
                                      {% for major in majors %}
-                                         <option value="{{ major[0] }}">
-                                         {{ major[1] }}
-                                         </option>
+                                         <option value="{{ major[0] }}">{{ major[1] }}</option>
                                      {% endfor %}
                                  </select>
                             </div>
@@ -253,7 +254,7 @@
 			</form>
 			</div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" onclick="makeSomething('change')">修改</button>
+                <button type="button" class="btn btn-default" onclick="makeSomething('change',0)">修改</button>
             </div>
         </div>
     </div>
@@ -284,12 +285,14 @@
         function setData(data){
             for(var i=0;i<data.length;i++){
                 var buttonSentence = "<button class='btn btn-success btn-sm' onclick='"+'change_stu(this)'+"'>修改</button>&nbsp;";
-                buttonSentence += "<button class='btn btn-danger btn-sm' onclick='"+'delete_stu(this)'+" '2>删除</button>";
+                buttonSentence += "<button class='btn btn-info btn-sm' onclick='"+'reset_stu(this)'+" '>重置密码</button>&nbsp;";
+                buttonSentence += "<button class='btn btn-danger btn-sm' onclick='"+'delete_stu(this)'+" '>删除</button>";
                 data[i].button=buttonSentence;
             }
             Form(data);
         }
         function Form(data){
+            init_table();
                 $('#stu_table').dataTable({
                     destroy: true,
                     bAutoWidth: true,  //自动设置宽度
@@ -333,6 +336,24 @@
                             },
                         },
                 });
+        }
+        function init_table(){
+            $('#stu_table').html("<thead>\n" +
+                "              <tr>\n" +
+                "                  <th>学号</th>\n" +
+                "                  <th>学生姓名</th>\n" +
+                "                  <th>性别</th>\n" +
+                "                  <th>入学年份</th>\n" +
+                "                  <th>毕业年份</th>\n" +
+                "                  <th>就业状态</th>\n" +
+                "                  <th>专业名称</th>\n" +
+                "                  <th>操作</th>\n" +
+                "              </tr>\n" +
+                "              </thead>\n" +
+                "              <tbody>\n" +
+                "\n" +
+                "              </tbody>");
+            $('h4').remove();
         }
 
 

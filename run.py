@@ -73,6 +73,9 @@ def web_admin_info_interface():
 def web_student_management_interface():
     return web_student_managementImpl()
 
+@app.route(WEB_major_management,methods=['GET'])
+def web_major_management_interface():
+    return web_major_managementImpl()
 
 # api
 # =================================
@@ -100,6 +103,13 @@ def api_register_interface():
 @app.route(API_student_management, methods=['POST'])
 def api_student_management_interface():
     return api_student_managementImpl()
+
+# 专业管理
+@app.route(API_major_management, methods=['POST'])
+def api_major_management_interface():
+    return api_major_managementImpl()
+
+
 
 # logout
 # =================================

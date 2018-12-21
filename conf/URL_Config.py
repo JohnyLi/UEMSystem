@@ -26,6 +26,7 @@ API_getAllAccountInfo = "/api/getAllAccountInfo"  # 获取所有用户的信息
 API_change_password="/api/change/password" # 修改密码
 API_register="/api/register"  #就业登记
 API_student_management="/api/student/management" #学生管理
+API_major_management="/api/major/management" #专业管理
 
 
 ##### LOGOUT ====

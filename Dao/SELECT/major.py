@@ -50,3 +50,25 @@ def GET_major_name_BY_major_id(major_id,handler=None):
         return None
     else:
         return result[0][0]
+
+def GET_major_id_BY_major_name(major_name,handler=None):
+    if not handler:
+        handler=easy_connect()
+    query = "select major_id from major where major_name=%s"
+    param = (major_name)
+    result = handler.SELECT(query,param)
+    if len(result)==0:
+        return None
+    else:
+        return result[0][0]
+
+def CHECK_major_name_EXIST(major_name,handler=None):
+    if not handler:
+        handler=easy_connect()
+    query = "select * from major where major_name=%s"
+    param = (major_name)
+    result = handler.SELECT(query, param)
+    if len(result)==0:
+        return False
+    else:
+        return True

@@ -1,3 +1,2 @@
-from Dao.SELECT.com_job import *
-
-print(GET_ALL_com_job_infos())
+from Dao.UPDATE.major_student import *
+INSERT_NEW_major_student(1,11310065)
