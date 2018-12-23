@@ -45,6 +45,8 @@
           </table>
 <script type="text/javascript">
     function deleteVerify(verify_id){
+        if(!confirm("确认删除？"))
+            return;
         var dict1 = {"verify_id":verify_id};
         $.ajax({
                 type:"post",

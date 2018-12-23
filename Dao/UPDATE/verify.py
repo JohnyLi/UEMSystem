@@ -29,11 +29,11 @@ def UPDATE_register(verify_id,status,handler=None):
     param = (status,from_year_to_second(),verify_id)
     return handler.UPDATE(query, param)
 
-def DELETE_student_IN_verify(stu_id,handler=None):
+def DELETE_student_IN_verify(verify_id,handler=None):
     if not handler:
         handler=easy_connect()
-    query = "delete from verify where stu_id = %s"
-    param = (stu_id)
+    query = "delete from verify where verify_id = %s"
+    param = (verify_id)
     return handler.UPDATE(query, param)
 
 def REFRESH_student_status(stu_id,handler=None):

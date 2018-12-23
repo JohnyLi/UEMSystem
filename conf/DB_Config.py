@@ -1,10 +1,10 @@
 # coding=utf-8
 
-DB_HOST = "111.231.196.149"
+DB_HOST = "10.21.116.80"
 
 DB_USER = "sa"
 
-DB_PASSWORD = "Johny520"
+DB_PASSWORD = "Zouzijing123"
 
 DB_NAME = "UEMSystem"
 

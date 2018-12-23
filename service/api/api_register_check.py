@@ -70,7 +70,4 @@ def api_register_checkImpl():
             response1['status'] = "操作失败"
 
 
-
-
-
     return jsonify(response1)

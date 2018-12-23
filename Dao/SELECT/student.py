@@ -48,6 +48,18 @@ def GET_student_INFO_BY_ID(id,handler=None):
     else:
         return result[0]
 
+def GET_student_major_INFO_BY_ID(id, handler=None):
+
+    if not handler:
+        handler = easy_connect()
+    query = "select * from v_major_student_infos where stu_id=%s"
+    param = (id)
+    result = handler.SELECT(query, param)
+    if len(result) == 0:
+        return None
+    else:
+        return result[0]
+
 def CHECK_stu_id_AND_password(stu_id,password,handler=None):
     if not handler:
         handler=easy_connect()

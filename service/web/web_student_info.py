@@ -2,7 +2,7 @@
 from flask import render_template,redirect,url_for,session
 from util.Functions1 import getSQLHandler,GetSideBar,check_session
 from conf.URL_Config import url_dict,STUDENT_BAR
-from Dao.SELECT.student import GET_student_INFO_BY_ID
+from Dao.SELECT.student import GET_student_major_INFO_BY_ID
 from Dao.SELECT.student_job import *
 def web_student_infoImpl():
     if not check_session():
@@ -11,7 +11,7 @@ def web_student_infoImpl():
     handler = getSQLHandler()
     id = session['user']
     data = {}
-    result = GET_student_INFO_BY_ID(id,handler)
+    result = GET_student_major_INFO_BY_ID(id,handler)
 
     if result == None:
         return redirect(url_for("logout"))
@@ -22,6 +22,7 @@ def web_student_infoImpl():
         data["enroll_year"] = result[2]
         data["gradu_year"] = result[3]
         data["status"] = result[5]
+        data['major_name']=result[8]
         if data['status']!="待业":
             student_job_info = GET_student_job_info_BY_stu_id(id,handler)
             if student_job_info!=None:
