@@ -13,7 +13,7 @@ def update_log():
 
     logging.getLogger("").removeHandler(console)
     logging.getLogger("").removeHandler(rotatingFileHandler)
-
+    
     if os.path.exists(logs_dir) and os.path.isdir(logs_dir):
         pass
     else:
