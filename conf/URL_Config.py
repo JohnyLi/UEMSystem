@@ -16,7 +16,6 @@ WEB_register_con="/student/register/con" #登记审核查询界面
 WEB_student_management="/admin/student/management" #管理员学生管理界面
 WEB_major_management="/admin/major/management" #管理员专业管理界面
 WEB_company_management="/admin/company/managent" #管理员公司管理界面
-WEB_admin_employ_con="/admin/student/register" #管理员学生登记界面
 WEB_register_check="/admin/register/check" #管理员登记审核界面
 
 
@@ -25,8 +24,11 @@ API_login = "/api/login"  # 登录
 API_getAllAccountInfo = "/api/getAllAccountInfo"  # 获取所有用户的信息
 API_change_password="/api/change/password" # 修改密码
 API_register="/api/register"  #就业登记
+API_delete_register = "/api/register/delete"  #删除登记
 API_student_management="/api/student/management" #学生管理
 API_major_management="/api/major/management" #专业管理
+API_register_check="/api/register_check" #登记审核
+API_company_management = "/api/company/management" #公司招聘信息管理
 
 
 ##### LOGOUT ====
@@ -48,8 +50,7 @@ STUDENT_BAR = [("查询往年就业情况",WEB_look),('个人信息',WEB_student
 
 ADMIN_BAR = [("查询往年就业情况",WEB_look),('个人信息',WEB_admin_info),
              ("学生管理",WEB_student_management),("专业管理",WEB_major_management),
-             ("公司招聘信息",WEB_company_management),
-             ("就业登记", WEB_admin_employ_con),("登记审核",WEB_register_check),
+             ("公司招聘信息",WEB_company_management),("登记审核",WEB_register_check),
              ]
 
 

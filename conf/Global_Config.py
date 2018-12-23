@@ -13,6 +13,6 @@ PRIVILEGE_STUDENT = 1
 
 ### STATUS
 STATUS_WAITING = "waiting"
-STATUS_SUCCESS = "success"
+STATUS_PASS = "pass"
 STATUS_FAIL = "fail"
 

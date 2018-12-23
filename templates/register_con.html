@@ -21,10 +21,18 @@
                           <td>{{ row.com_name }}</td>
                           <td>{{ row.job_name }}</td>
                           <td>{{ row.register_time }}</td>
-                          <td>{{ row.verify_con }}</td>
+                          <td>
+                              {% if row.verify_con=="pass" %}
+                              通过
+                              {% elif row.verify_con=="fail" %}
+                              不通过
+                              {% elif row.verify_con=="waiting" %}
+                              等待审核
+                              {% endif %}
+                          </td>
                           <td>
                               <button class="btn btn-success btn-sm"
-                                      {% if row.verify_con=="success" %}disabled{% endif %}
+                                      {% if row.verify_con=="success" or row.verify_con=="fail" %}disabled{% endif %}
                                       onclick="deleteVerify({{ row.verify_id }})">
                                   删除登记
                               </button>
@@ -35,6 +43,11 @@
               {% endfor %}
               </tbody>
           </table>
+<script type="text/javascript">
+    function deleteVerify(verify_id){
 
+    }
+
+</script>
 
 {% endblock %}

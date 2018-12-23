@@ -32,3 +32,18 @@ def GET_ALL_com_nameandid(handler=None):
     query = "select * from company"
     result = handler.SELECT(query)
     return result
+
+
+def CHECK_com_job_NUM_NOT_ENOUGH(com_job_id,handler=None):
+    if not handler:
+        handler=easy_connect()
+    query = "select exist_num,need_num from v_com_job where com_job_id=%s"
+    param = (com_job_id)
+    result = handler.SELECT(query,param)
+    if len(result)==0:
+        return False
+    else:
+        if result[0][0]>=result[0][1]:
+            return False
+        else:
+            return True

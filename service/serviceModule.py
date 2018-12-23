@@ -9,6 +9,8 @@ from service.web.web_register_con import web_register_conImpl
 from service.web.web_admin_info import web_admin_infoImpl
 from service.web.web_student_management import web_student_managementImpl
 from service.web.web_major_management import web_major_managementImpl
+from service.web.web_register_check import web_register_checkImpl
+from service.web.web_company_management import web_company_managementImpl
 
 
 from service.api.api_getAllAccountInfo import api_getAllAccountInfoImpl
@@ -17,3 +19,6 @@ from service.api.api_change_password import api_change_passwordImpl
 from service.api.api_register import api_registerImpl
 from service.api.api_student_management import api_student_managementImpl
 from service.api.api_major_management import api_major_managementImpl
+from service.api.api_register_check import api_register_checkImpl
+from service.api.api_company_management import api_company_managementImpl
+from service.api.api_delete_register import api_delete_registerImpl

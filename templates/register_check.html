@@ -1,0 +1,184 @@
+{% extends "layout.html" %}
+{% block title %}
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+
+    <title>登记审核</title>
+{% endblock %}
+{% block body %}
+    <h3>登记审核</h3>
+<HR>
+    <table class="table table-striped" id="stu_table">
+
+    </table>
+
+
+
+    <script type="text/javascript">
+        init_table();
+        function init_table(){
+            var dict1={'control':'get_register'};
+            $.ajax({
+                type:"post",
+                contentType:"application/json;charset=UTF-8",
+                url:"{{ url_dict.API_register_check }}",
+                dataType:'json',
+                data:JSON.stringify(dict1),
+                success:function(data){
+                    if(data.status=="success"){
+                        set_data(data.data);
+                    }
+                    else{
+                        alert("请求失败");
+                    }
+                },
+
+
+            });
+        }
+
+
+        function set_data(input){
+            var result = [];
+            for(var i=0;i<input.length;i++){
+                let temp = input[i];
+                let tempDict = {};
+                tempDict.company_name = temp[11];
+                tempDict.verify_id = temp[0];
+                tempDict.stu_id = temp[2];
+                tempDict.stu_name = temp[13];
+                tempDict.job_name = temp[12];
+                tempDict.create_time = temp[4];
+                tempDict.com_job_id = temp[1];
+                let status = temp[3];
+                var button;
+                if(status=="waiting"){
+                    button = "<button class='btn btn-success btn-sm' onclick='pass(this)'>通过</button>&nbsp;";
+                    button += "<button class='btn btn-danger btn-sm' onclick='fail(this)'>不通过</button>";
+                    tempDict.status = "未审核";
+                }
+                else if(status=="fail"){
+                    tempDict.status = "<span style='color:red'>不通过</span> 审核于"+temp[14];
+                    button = "<button class='btn btn-primary btn-sm' onclick='waiting(this)'>重置</button>";
+                }
+
+                else if(status=="pass"){
+                    tempDict.status = "<span style='color:red'>通过</span> 审核于"+temp[14];
+                    button = "<button class='btn btn-primary btn-sm' onclick='waiting(this)'>重置</button>";
+                }
+                tempDict.button = button;
+                result.push(tempDict);
+            }
+            Form(result);
+        }
+
+        function Form(data){
+                $('#stu_table').html("<thead>\n" +
+                    "            <tr>\n" +
+                    "                <td>审核号</td>\n" +
+                    "                <td>学号</td>\n" +
+                    "                <td>学生姓名</td>\n" +
+                    "                <td>公司名</td>\n" +
+                    "                <td>职位名称</td><td>职位id</td>\n" +
+                    "                <td>登记时间</td>\n" +
+                    "                <td>审核状态</td>\n" +
+                    "                <td>审核</td>\n" +
+                    "            </tr>\n" +
+                    "\n" +
+                    "        </thead>");
+                $('#stu_table').dataTable({
+                    destroy: true,
+                    bAutoWidth: true,  //自动设置宽度
+                    data:data,
+                    bStateSave : true,
+                    bPaginate : true,
+                    bLengthChange : false,// 每行显示记录数
+                    iDisplayLength : 5,// 每页显示行数
+                    bInfo : true,
+                    sPaginationType : "full_numbers", // 分页，一共两种样式 另一种为two_button // 是datatables默认
+                    bProcessing : true,
+                    columns:[
+                        {data:'verify_id'},
+                        {data:'stu_id'},
+                        {data:'stu_name'},
+                        {data:'company_name'},
+                        {data:'job_name'},
+                        {data:'com_job_id'},
+                        {data:'create_time'},
+                        {data:'status'},
+                        {data:'button'},
+                      ],
+                      /*国际化语言*/
+                      language : {
+                            "sProcessing" : "处理中...",
+                            "sLengthMenu" : "显示 _MENU_ 项结果",
+                            "sZeroRecords" : "没有匹配结果",
+                            "sInfo" : "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                            "sInfoEmpty" : "显示第 0 至 0 项结果，共 0 项",
+                            "sInfoFiltered" : "(由 _MAX_ 项结果过滤)",
+                            "sInfoPostFix" : "",
+                            "sSearch" : "搜索:",
+                            "sUrl" : "",
+                            "sEmptyTable" : "表中数据为空",
+                            "sLoadingRecords" : "载入中...",
+                            "sInfoThousands" : ",",
+                            "oPaginate" : {
+                                "sFirst" : "首页",
+                                "sPrevious" : "上页",
+                                "sNext" : "下页",
+                                "sLast" : "末页"
+                            },
+                        },
+                });
+        }
+
+        function pass(that){
+            if(!confirm("确认通过?"))
+                return ;
+
+            var tds = $(that).parent().parent().children("td");
+            var dict1 = {'control':"pass","verify_id":$(tds[0]).html(),'stu_id':$(tds[1]).html(),
+                'com_job_id':$(tds[5]).html()
+            };
+            send(dict1);
+
+        }
+        function fail(that){
+            if(!confirm("确认不通过?"))
+                return ;
+            var tds = $(that).parent().parent().children("td");
+            var dict1 = {'control':"fail","verify_id":$(tds[0]).html(),'stu_id':$(tds[1]).html(),
+                'com_job_id':$(tds[5]).html()
+            };
+            send(dict1);
+        }
+
+        function waiting(that){
+            if(!confirm("确认重置？"))
+                return;
+            var tds = $(that).parent().parent().children("td");
+            var dict1 = {'control':"waiting","verify_id":$(tds[0]).html(),'stu_id':$(tds[1]).html(),
+            'com_job_id':$(tds[5]).html()};
+            send(dict1);
+        }
+
+        function send(dict1){
+            $.ajax({
+                type:"post",
+                contentType:"application/json;charset=UTF-8",
+                url:"{{ url_dict.API_register_check }}",
+                dataType:'json',
+                data:JSON.stringify(dict1),
+                success:function(data){
+                    alert(data.status);
+                    location.replace(window.location.href);
+                },
+
+
+            });
+        }
+
+
+    </script>
+
+{% endblock %}

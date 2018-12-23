@@ -32,7 +32,7 @@ def get_total_employ_con(infos):
         else:
             result['employ_num']+=1
 
-    result['employ_rate']=str(result['employ_num']/result['gradu_num']*100)+'%'
+    result['employ_rate']=str(round(result['employ_num']/result['gradu_num']*100,2))+'%'
     return result
 
 def get_employ_con_major(handler,infos):
@@ -55,12 +55,12 @@ def get_employ_con_major(handler,infos):
                 break
         if major_student_dict.__contains__(major_name):
             major_student_dict[major_name]['major_num']+=1
-            if stu_state=='待业':
-                major_student_dict[major_name]['major_wait_num']+=1
-            else:
-                major_student_dict[major_name]['major_employ_num'] += 1
         else:
-            major_student_dict[major_name]={'major_num':0,'major_wait_num':0,'major_employ_num':0}
+            major_student_dict[major_name]={'major_num':1,'major_wait_num':0,'major_employ_num':0}
+        if stu_state=='待业':
+            major_student_dict[major_name]['major_wait_num']+=1
+        else:
+            major_student_dict[major_name]['major_employ_num'] += 1
 
     result = []
     for major_name in major_student_dict.keys():
@@ -69,7 +69,7 @@ def get_employ_con_major(handler,infos):
         temp['major_num'] = major_student_dict[major_name]['major_num']
         temp['major_employ_num'] = major_student_dict[major_name]['major_employ_num']
         try:
-            temp['major_employ_rate'] = str(temp['major_employ_num']/temp['major_num']*100)+"%"
+            temp['major_employ_rate'] = str(round(temp['major_employ_num']/temp['major_num']*100,2))+"%"
         except:
             temp['major_employ_rate'] = "NaN"
         result.append(temp)

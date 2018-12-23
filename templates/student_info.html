@@ -33,6 +33,19 @@
                 <br/>
 
             </div>
+            {% if data.status != "待业" %}
+            <div class="col-sm-4">
+                <label><h5 style="font-weight: bold">就业公司</h5></label>
+                 <input type="text" class="form-control" value="{{ data.company_name }}" style="background-color: white;"
+                       readonly/>
+                <br/>
+                <label><h5 style="font-weight: bold">就业职位</h5></label>
+                 <input type="text" class="form-control" value="{{ data.job_name }}" style="background-color: white;"
+                       readonly/>
+                <br/>
+
+            </div>
+            {% endif %}
 
 
 

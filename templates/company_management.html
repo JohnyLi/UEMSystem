@@ -1,0 +1,483 @@
+{% extends "layout.html" %}
+{% block title %}
+    <title>公司招聘信息</title>
+ <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+<link href="{{ url_for('static', filename='css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" />
+<script src="{{ url_for('static', filename='js/moment-with-locales.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap-datetimepicker.min.js') }}"></script>
+
+{% endblock %}
+{% block body %}
+<h3>公司招聘信息</h3>
+<HR>
+<button class="btn btn-success" onclick="publishModal()">发布一条新招聘信息</button>
+<button class="btn btn-danger" onclick="addCompanyModal()">新增公司</button>
+<button class="btn btn-warning" onclick="addJobStyleModal()">新增职业类型</button>
+<table class="table table-striped" id="table">
+
+
+</table>
+
+
+
+<div class="modal fade" id="AddCompanyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">新增公司</h4>
+            </div>
+            <div class="modal-body">
+			<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">公司名</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="company_name" value=""
+                                       placeholder="请输入公司名">
+                            </div>
+                </div>
+			</form>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="addCompany()">新增</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="AddJobStyleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">新增职业类型</h4>
+            </div>
+            <div class="modal-body">
+			<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">职业类型名</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="style_name" value=""
+                                       placeholder="请输入职业类型名">
+                            </div>
+                </div>
+			</form>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="addJobStyle()">新增</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="publishModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">发布招聘信息</h4>
+            </div>
+            <div class="modal-body">
+			<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">职位名称</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="publish_job_name" value=""
+                                       placeholder="请输入职位名称">
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">需求数量</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="publish_need_num" value=""
+                                       placeholder="请输入需求数量">
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">用人单位</label>
+                            <div class="col-sm-7">
+                                 <select id="publish_company_choose">
+                                     {% for com_info in com_infos %}
+                                         <option value="{{ com_info[0] }}">
+                                         {{ com_info[1] }}
+                                         </option>
+                                     {% endfor %}
+                                 </select>
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">职业类型</label>
+                            <div class="col-sm-7">
+                                 <select id="publish_style_choose">
+                                     {% for style_info in style_infos %}
+                                         <option value="{{ style_info[0] }}">
+                                         {{ style_info[1] }}
+                                         </option>
+                                     {% endfor %}
+                                 </select>
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">截止时间</label>
+                    <div class="col-sm-7">
+                        <span class="input-append date form_datetime" id="datetimepicker1">
+                            <input  id="publish_end_date" type="text" value="" style="background-color: white;" readonly placeholder="请选择日期" class="form-control">
+                            <span class="add-on"><i class="icon-th"></i></span>
+                        </span>
+                    </div>
+                </div>
+			</form>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="publish()">发布</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="changeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">更改招聘信息</h4>
+            </div>
+            <div class="modal-body">
+			<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">发布id</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="change_com_job_id" value=""
+                                       readonly>
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">职位名称</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="change_job_name" value=""
+                                       placeholder="请输入职位名称" readonly>
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">需求数量</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="change_need_num" value=""
+                                       placeholder="请输入需求数量">
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">用人单位</label>
+                            <div class="col-sm-7">
+                                 <select id="change_company_choose">
+                                     {% for com_info in com_infos %}
+                                         <option value="{{ com_info[0] }}">
+                                         {{ com_info[1] }}
+                                         </option>
+                                     {% endfor %}
+                                 </select>
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">职业类型</label>
+                            <div class="col-sm-7">
+                                 <select id="change_style_choose">
+                                     {% for style_info in style_infos %}
+                                         <option value="{{ style_info[0] }}">
+                                         {{ style_info[1] }}
+                                         </option>
+                                     {% endfor %}
+                                 </select>
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">截止时间</label>
+                    <div class="col-sm-7">
+                        <span class="input-append date form_datetime" id="datetimepicker2">
+                            <input  id="change_end_date" type="text" value="" style="background-color: white;" readonly placeholder="请选择日期" class="form-control">
+                            <span class="add-on"><i class="icon-th"></i></span>
+                        </span>
+                    </div>
+                </div>
+			</form>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="change()">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    makeInfomation();
+
+    function send(dict1){
+        $.ajax({
+                type:"post",
+                contentType:"application/json;charset=UTF-8",
+                url:"{{ url_dict.API_company_management }}",
+                dataType:'json',
+                data:JSON.stringify(dict1),
+                success:function(data){
+                    alert(data.status);
+                    location.replace(window.location.href);
+                },
+            });
+    }
+
+    function addCompanyModal(){
+        $('#company_name').val("");
+        $('#AddCompanyModal').modal('show');
+    }
+
+    function addCompany(){
+        var company_name = $('#company_name').val();
+        if(company_name=="")
+            return;
+        else if(!confirm("确认添加?"))
+            return;
+        var dict1 = {'control':"addCompany",'com_name':company_name};
+        send(dict1);
+    }
+
+     function addJobStyleModal(){
+        $('#style_name').val("");
+        $('#AddJobStyleModal').modal('show');
+    }
+
+    function addJobStyle(){
+        var style_name = $('#style_name').val();
+        if(style_name=="")
+            return;
+        else if(!confirm("确认增加?"))
+            return;
+        var dict1 = {'control':"addJobStyle",'style_name':style_name};
+        send(dict1);
+    }
+
+    function publishModal(){
+        $('#publish_job_name').val("");
+        $('#publish_need_num').val("");
+        $('#publish_end_date').val("");
+        $('#publishModal').modal('show');
+    }
+
+    function publish(){
+        var job_name = $('#publish_job_name').val();
+        var com_id = $('#publish_company_choose').val();
+        var style_id = $('#publish_style_choose').val();
+        var need_num = $('#publish_need_num').val();
+        var end_date = $('#publish_end_date').val();
+        var re = /^\+?[1-9][0-9]*$/;
+        if(need_num==""||job_name==""||end_date==""){
+            alert("需求数量或职位名或截止日期不可为空");
+            return;
+        }
+        else if(!re.test(need_num)){
+            alert("需求数量应为整数");
+            return;
+        }
+        else if(!confirm("确认发布?"))
+            return;
+
+        var dict1 = {'control':"publish",'job_name':job_name,'com_id':com_id,
+            'style_id':style_id,'need_num':need_num,'end_date':end_date};
+        send(dict1);
+    }
+
+    function change(){
+        var com_id = $('#change_company_choose').val();
+        var style_id = $('#change_style_choose').val();
+        var need_num = $('#change_need_num').val();
+        var end_date = $('#change_end_date').val();
+        var com_job_id = $('#change_com_job_id').val();
+        var re = /^\+?[1-9][0-9]*$/;
+        if(need_num==""||end_date=="") {
+            alert("需求数量或截止日期不可为空");
+            return;
+        }
+        else if(!re.test(need_num)){
+            alert("需求数量应为整数");
+            return;
+        }
+        else if(!confirm("确认更改?"))
+            return;
+        var dict1 = {'control':"change",'com_id':com_id,'com_job_id':com_job_id,
+            'style_id':style_id,'need_num':need_num,'end_date':end_date};
+        send(dict1);
+
+
+
+    }
+
+    function changeModal(that){
+        var tds = $(that).parent().parent().children("td");
+        $('#change_com_job_id').val($(tds[0]).html());
+        $('#change_job_name').val($(tds[3]).html());
+        $('#change_need_num').val($(tds[5]).html());
+        $('#change_end_date').val($(tds[8]).html());
+        let com_name = $(tds[2]).html();
+        let style_name = $(tds[4]).html();
+        let companies = $('#change_company_choose').children('option');
+        let styles = $('#change_style_choose').children('option');
+        for(let i=0;i<companies.length;i++){
+                if($(companies[i]).html().trim()==com_name){
+                    $(companies[i]).attr('selected',true);
+                }
+                else
+                    $(companies[i]).attr('selected',false);
+        }
+        for(let i=0;i<styles.length;i++){
+                if($(styles[i]).html().trim()==style_name){
+                    $(styles[i]).attr('selected',true);
+                }
+                else
+                    $(styles[i]).attr('selected',false);
+        }
+
+
+
+        $('#changeModal').modal('show');
+    }
+
+
+
+
+
+    function init_table(){
+        $("#table").html("<thead>\n" +
+            "        <tr>\n" +
+            "            <td>职位发布id</td><td>公司id</td>\n" +
+            "            <td>公司名称</td>\n" +
+            "            <td>职位名称</td><td>职业类型</td>" +
+            "            <td>需求数量</td>\n" +
+            "            <td>已聘用数量</td>\n" +
+            "            <td>开始时间</td>\n" +
+            "            <td>结束时间</td>\n" +
+            "            <td>操作</td>\n" +
+            "        </tr>\n" +
+            "    </thead>");
+    }
+
+    function makeInfomation(){
+        var dict1={'control':'get_com_job_infos'};
+            $.ajax({
+                type:"post",
+                contentType:"application/json;charset=UTF-8",
+                url:"{{ url_dict.API_company_management }}",
+                dataType:'json',
+                data:JSON.stringify(dict1),
+                success:function(data){
+                    if(data.status=="success"){
+                        setData(data.data);
+                    }
+                    else{
+                        alert("请求失败");
+                    }
+                },
+
+
+            });
+    }
+
+    function setData(data){
+        var result = [];
+        for(var i=0;i<data.length;i++){
+            let tempDict = {};
+            let temp = data[i];
+            tempDict.com_job_id = temp[0];
+            tempDict.com_id = temp[1];
+            tempDict.exist_num = temp[3];
+            tempDict.need_num = temp[4];
+            tempDict.start_time = temp[5];
+            tempDict.finish_time = temp[6];
+            tempDict.com_name = temp[7];
+            tempDict.job_name = temp[8];
+            tempDict.style_name = temp[10];
+            tempDict.button = "<button class='btn btn-primary btn-sm' onclick='changeModal(this)'>修改</button>";
+            result.push(tempDict);
+        }
+        Form(result);
+    }
+
+    function Form(data){
+            init_table();
+                $('#table').dataTable({
+                    destroy: true,
+                    bAutoWidth: true,  //自动设置宽度
+                    data:data,
+                    bStateSave : true,
+                    bPaginate : true,
+                    bLengthChange : false,// 每行显示记录数
+                    iDisplayLength : 5,// 每页显示行数
+                    bInfo : true,
+                    sPaginationType : "full_numbers", // 分页，一共两种样式 另一种为two_button // 是datatables默认
+                    bProcessing : true,
+                    columns:[
+                        {data:'com_job_id'},
+                        {data:'com_id'},
+                        {data:'com_name'},
+                        {data:'job_name'},
+                        {data:'style_name'},
+                        {data:'need_num'},
+                        {data:'exist_num'},
+                        {data:'start_time'},
+                        {data:'finish_time'},
+                        {data:'button'},
+                      ],
+                      /*国际化语言*/
+                      language : {
+                            "sProcessing" : "处理中...",
+                            "sLengthMenu" : "显示 _MENU_ 项结果",
+                            "sZeroRecords" : "没有匹配结果",
+                            "sInfo" : "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                            "sInfoEmpty" : "显示第 0 至 0 项结果，共 0 项",
+                            "sInfoFiltered" : "(由 _MAX_ 项结果过滤)",
+                            "sInfoPostFix" : "",
+                            "sSearch" : "搜索:",
+                            "sUrl" : "",
+                            "sEmptyTable" : "表中数据为空",
+                            "sLoadingRecords" : "载入中...",
+                            "sInfoThousands" : ",",
+                            "oPaginate" : {
+                                "sFirst" : "首页",
+                                "sPrevious" : "上页",
+                                "sNext" : "下页",
+                                "sLast" : "末页"
+                            },
+                        },
+                });
+
+    }
+
+    var today = new Date();
+    var tomorrow = new Date();
+    tomorrow.setTime(today.getTime()+24*60*60*1000);
+    $('#datetimepicker1').datetimepicker({
+        format: 'yyyy-mm-dd',
+        minView: "month",
+        initialDate: new Date(),
+        startDate: new Date(tomorrow.getFullYear(),tomorrow.getMonth(),tomorrow.getDate()),
+        autoclose: true,
+        todayBtn: true,
+        locale: moment.locale('zh-cn'),
+    });
+    $('#datetimepicker2').datetimepicker({
+        format: 'yyyy-mm-dd',
+        minView: "month",
+        initialDate: new Date(),
+        startDate: new Date(tomorrow.getFullYear(),tomorrow.getMonth(),tomorrow.getDate()),
+        autoclose: true,
+        todayBtn: true,
+        locale: moment.locale('zh-cn'),
+    });
+
+
+</script>
+
+
+{% endblock %}

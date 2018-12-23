@@ -104,12 +104,37 @@
                         },
             });
         }
+
+        function register(that){
+            if(!confirm("确认登记？"))
+                return;
+            var stu_id = $('#stu_id3').val();
+            var tds = $(that).parent().parent().children('td');
+            var com_job_id = $(tds[0]).html();
+            var dict1 = {"control":'register','stu_id':stu_id,'com_job_id':com_job_id};
+            $.ajax({
+                        type:"post",
+                        contentType:"application/json;charset=UTF-8",
+                        url:"{{ url_dict.API_student_management }}",
+                        dataType:'json',
+                        async:false,
+                        data:JSON.stringify(dict1),
+                        success:function(data){
+                            alert(data.status);
+                            location.replace(window.location.href);
+                        },
+            });
+
+        }
+
     </script>
 
 
 
 {% endblock %}
 {% block body %}
+    <h3>学生管理</h3>
+<HR>
     <button class="btn btn-primary" onclick="add_stu()">新增学生</button>
     <h4 style="color:red">加载中..</h4>
     <table class="table table-striped" id="stu_table">
@@ -189,7 +214,7 @@
     </div>
 </div>
 
-    <div class="modal fade" id="changeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="changeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -260,8 +285,45 @@
     </div>
 </div>
 
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog"  style="width:1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="register">登记</h4>
+            </div>
+            <div class="modal-body">
+			<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">学号</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="stu_id3" value=""
+                                       placeholder="请输入学号" readonly>
+                            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">姓名</label>
+                            <div class="col-sm-7">
+                                 <input type="text" class="form-control" id="stu_name3" value=""
+                                       placeholder="请输入姓名" readonly>
+                            </div>
+                </div>
+                <table class="table table-striped" id="register_table">
+
+                </table>
+
+			</form>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
         make_student_info();
+        makePublishInfo();
         function make_student_info(){
             var dict1={'control':'get_student_info'}
             $.ajax({
@@ -284,9 +346,13 @@
         }
         function setData(data){
             for(var i=0;i<data.length;i++){
-                var buttonSentence = "<button class='btn btn-success btn-sm' onclick='"+'change_stu(this)'+"'>修改</button>&nbsp;";
-                buttonSentence += "<button class='btn btn-info btn-sm' onclick='"+'reset_stu(this)'+" '>重置密码</button>&nbsp;";
-                buttonSentence += "<button class='btn btn-danger btn-sm' onclick='"+'delete_stu(this)'+" '>删除</button>";
+                var buttonSentence = "<button class='btn btn-success btn-sm' onclick='change_stu(this)'>修改</button>&nbsp;";
+                buttonSentence += "<button class='btn btn-info btn-sm' onclick='reset_stu(this)'>重置密码</button>&nbsp;";
+                buttonSentence += "<button class='btn btn-danger btn-sm' onclick='delete_stu(this)'>删除</button>&nbsp;";
+                if(data[i].status=="待业")
+                    buttonSentence += "<button class='btn btn-primary btn-sm' onclick='registerModal(this)'>登记</button>";
+                else
+                    buttonSentence += "<button class='btn btn-primary btn-sm' disabled>登记</button>";
                 data[i].button=buttonSentence;
             }
             Form(data);
@@ -336,6 +402,7 @@
                             },
                         },
                 });
+
         }
         function init_table(){
             $('#stu_table').html("<thead>\n" +
@@ -355,6 +422,117 @@
                 "              </tbody>");
             $('h4').remove();
         }
+
+
+    function makePublishInfo(){
+        var dict1={'control':'get_com_job_infos'};
+            $.ajax({
+                type:"post",
+                contentType:"application/json;charset=UTF-8",
+                url:"{{ url_dict.API_student_management }}",
+                dataType:'json',
+                data:JSON.stringify(dict1),
+                success:function(data){
+                    if(data.status=="success"){
+                        setPublishDate(data.data);
+                    }
+                    else{
+                        alert("请求失败");
+                    }
+                },
+
+
+            });
+    }
+
+    function registerModal(that){
+            var tds = $(that).parent().parent().children("td");
+            $('#stu_id3').val($(tds[0]).html());
+            $('#stu_name3').val($(tds[1]).html());
+            $('#registerModal').modal('show');
+    }
+
+    function setPublishDate(data){
+        var result = [];
+        for(var i=0;i<data.length;i++){
+            let tempDict = {};
+            let temp = data[i];
+            tempDict.com_job_id = temp[0];
+            tempDict.com_id = temp[1];
+            tempDict.exist_num = temp[3];
+            tempDict.need_num = temp[4];
+            tempDict.start_time = temp[5];
+            tempDict.finish_time = temp[6];
+            tempDict.com_name = temp[7];
+            tempDict.job_name = temp[8];
+            tempDict.style_name = temp[10];
+            if(tempDict.exist_num!=tempDict.need_num)
+                tempDict.button = "<button class='btn btn-primary btn-sm' onclick='register(this)' >登记</button>";
+            else
+                tempDict.button = "<button class='btn btn-primary btn-sm' disabled >登记</button>";
+            result.push(tempDict);
+        }
+        FormPublish(result);
+
+    }
+
+    function FormPublish(data){
+            $("#register_table").html("<thead>\n" +
+            "        <tr>\n" +
+            "            <td>职位发布id</td><td>公司id</td>\n" +
+            "            <td>公司名称</td>\n" +
+            "            <td>职位名称</td><td>职业类型</td>" +
+            "            <td>需求数量</td>\n" +
+            "            <td>已聘用数量</td>\n" +
+            "            <td>结束时间</td>\n" +
+            "            <td>操作</td>\n" +
+            "        </tr>\n" +
+            "    </thead>");
+                $('#register_table').dataTable({
+                    destroy: true,
+                    bAutoWidth: true,  //自动设置宽度
+                    data:data,
+                    bStateSave : true,
+                    bPaginate : true,
+                    bLengthChange : false,// 每行显示记录数
+                    iDisplayLength : 5,// 每页显示行数
+                    bInfo : true,
+                    sPaginationType : "full_numbers", // 分页，一共两种样式 另一种为two_button // 是datatables默认
+                    bProcessing : true,
+                    columns:[
+                        {data:'com_job_id'},
+                        {data:'com_id'},
+                        {data:'com_name'},
+                        {data:'job_name'},
+                        {data:'style_name'},
+                        {data:'need_num'},
+                        {data:'exist_num'},
+                        {data:'finish_time'},
+                        {data:'button'},
+                      ],
+                      /*国际化语言*/
+                      language : {
+                            "sProcessing" : "处理中...",
+                            "sLengthMenu" : "显示 _MENU_ 项结果",
+                            "sZeroRecords" : "没有匹配结果",
+                            "sInfo" : "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                            "sInfoEmpty" : "显示第 0 至 0 项结果，共 0 项",
+                            "sInfoFiltered" : "(由 _MAX_ 项结果过滤)",
+                            "sInfoPostFix" : "",
+                            "sSearch" : "搜索:",
+                            "sUrl" : "",
+                            "sEmptyTable" : "表中数据为空",
+                            "sLoadingRecords" : "载入中...",
+                            "sInfoThousands" : ",",
+                            "oPaginate" : {
+                                "sFirst" : "首页",
+                                "sPrevious" : "上页",
+                                "sNext" : "下页",
+                                "sLast" : "末页"
+                            },
+                        },
+                });
+    }
 
 
 </script>

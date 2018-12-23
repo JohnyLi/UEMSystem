@@ -3,7 +3,8 @@
 <title>专业管理</title>
 {% endblock %}
 {% block body %}
-
+<h3>专业管理</h3>
+<HR>
 <button class="btn btn-success" onclick="$('#addMajorModal').modal('show')">新增专业</button>
 <button class="btn btn-danger" onclick="$('#apartModal').modal('show')">新增院系</button>
 
@@ -41,10 +42,10 @@
             <div class="modal-body">
 			<form class="form-horizontal" role="form">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">部门名</label>
+                    <label class="col-sm-3 control-label">院系</label>
                             <div class="col-sm-7">
                                  <input type="text" class="form-control" id="apart_name" value=""
-                                       placeholder="请输入部门名">
+                                       placeholder="请输入院系名">
                             </div>
                 </div>
 			</form>
@@ -73,7 +74,7 @@
                             </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">部门</label>
+                    <label class="col-sm-3 control-label">院系</label>
                             <div class="col-sm-7">
                                  <select id="apart_choose1">
                                      {% for apart_info in apart_infos %}

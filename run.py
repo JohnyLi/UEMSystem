@@ -77,6 +77,20 @@ def web_student_management_interface():
 def web_major_management_interface():
     return web_major_managementImpl()
 
+# 登记审核
+@app.route(WEB_register_check, methods=['GET'])
+def web_register_check_interface():
+    return web_register_checkImpl()
+
+
+# 管理员就业登记
+@app.route(WEB_company_management, methods=['GET'])
+def web_company_management_interface():
+    return web_company_managementImpl()
+
+
+
+
 # api
 # =================================
 
@@ -109,6 +123,20 @@ def api_student_management_interface():
 def api_major_management_interface():
     return api_major_managementImpl()
 
+#  登记审核
+@app.route(API_register_check,methods = ['POST'])
+def api_register_check_interface():
+    return api_register_checkImpl()
+
+#  公司招聘信息管理
+@app.route(API_company_management,methods = ['POST'])
+def api_company_management_interface():
+    return api_company_managementImpl()
+
+#  删除登记
+@app.route(API_delete_register,methods = ['POST'])
+def api_delete_register_interface():
+    return api_delete_registerImpl()
 
 
 # logout
