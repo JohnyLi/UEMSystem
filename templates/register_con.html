@@ -45,7 +45,20 @@
           </table>
 <script type="text/javascript">
     function deleteVerify(verify_id){
+        var dict1 = {"verify_id":verify_id};
+        $.ajax({
+                type:"post",
+                contentType:"application/json;charset=UTF-8",
+                url:"{{ url_dict.API_delete_register }}",
+                dataType:'json',
+                data:JSON.stringify(dict1),
+                success:function(data){
+                    alert(data.status);
+                    location.replace(window.location.href);
+                },
 
+
+            });
     }
 
 </script>
